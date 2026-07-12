@@ -11,3 +11,8 @@
 .DS_Store
 .idea/
 .vscode/
+
+# Generated at deploy time by init-tls.sh (contains the VM's derived
+# sslip.io hostname) — not committed, see nginx/available/ for the source
+# templates.
+nginx/conf.d/*.conf

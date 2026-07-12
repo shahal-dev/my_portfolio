@@ -1,0 +1,51 @@
+# Deploys the Strapi CMS + an nginx TLS-terminating reverse proxy in front of
+# it. The frontend is NOT part of this compose file — it stays on Vercel.
+# See README.md "Deploying Strapi to the VM" for the full setup sequence
+# (this file alone isn't enough on a fresh VM — TLS needs to be bootstrapped
+# first via init-tls.sh).
+#
+# `strapi` pulls a pre-built image rather than building locally — the VM has
+# ~500MB RAM, nowhere near enough to bundle Strapi's admin panel itself. The
+# image is built in GitHub Actions (.github/workflows/build-cms.yml) and
+# pushed to GHCR on every push to cms/.
+
+services:
+  strapi:
+    image: ghcr.io/shahal-dev/my_portfolio-cms:latest
+    restart: unless-stopped
+    env_file:
+      - ./cms/.env
+    volumes:
+      - strapi_db:/app/.tmp
+      - strapi_uploads:/app/public/uploads
+    # Not published to the host — only nginx needs to reach this, over the
+    # internal compose network as `strapi:1337`.
+    expose:
+      - "1337"
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    depends_on:
+      - strapi
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot_conf:/etc/letsencrypt
+      - certbot_webroot:/var/www/certbot
+
+volumes:
+  # Explicit names (rather than letting Compose prefix them with the project
+  # name) so init-tls.sh's standalone `docker run certbot` call can reference
+  # the exact same volumes nginx uses, regardless of which directory compose
+  # is invoked from.
+  strapi_db:
+    name: strapi_db
+  strapi_uploads:
+    name: strapi_uploads
+  certbot_conf:
+    name: certbot_conf
+  certbot_webroot:
+    name: certbot_webroot
