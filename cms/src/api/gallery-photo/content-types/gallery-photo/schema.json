@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gallery_photos",
+  "info": {
+    "singularName": "gallery-photo",
+    "pluralName": "gallery-photos",
+    "displayName": "Gallery Photo",
+    "description": "Astrophotography gallery entries"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "objectName": {
+      "type": "string"
+    },
+    "objectType": {
+      "type": "enumeration",
+      "enum": ["Galaxy", "Nebula", "Star Cluster", "Planet", "Comet", "Star", "Other"]
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "capturedImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "additionalImages": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "captureDate": {
+      "type": "date"
+    },
+    "location": {
+      "type": "string"
+    },
+    "gearSetup": {
+      "type": "component",
+      "repeatable": false,
+      "component": "astro.gear-setup"
+    },
+    "professionalComparison": {
+      "type": "component",
+      "repeatable": false,
+      "component": "astro.professional-comparison"
+    },
+    "tags": {
+      "type": "text"
+    }
+  }
+}

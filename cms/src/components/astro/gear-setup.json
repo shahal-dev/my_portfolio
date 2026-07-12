@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_astro_gear_setups",
+  "info": {
+    "displayName": "Gear Setup",
+    "icon": "feather"
+  },
+  "options": {},
+  "attributes": {
+    "telescope": { "type": "string" },
+    "camera": { "type": "string" },
+    "mount": { "type": "string" },
+    "filters": { "type": "string" },
+    "exposureTotal": { "type": "string" },
+    "subExposure": { "type": "string" },
+    "isoOrGain": { "type": "string" },
+    "guiding": { "type": "string" },
+    "softwareUsed": { "type": "string" },
+    "bortleScale": { "type": "string" }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_astro_professional_comparisons",
+  "info": {
+    "displayName": "Professional Comparison",
+    "icon": "picture"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "sourceLabel": {
+      "type": "string",
+      "required": true
+    },
+    "credit": {
+      "type": "string"
+    },
+    "sourceUrl": {
+      "type": "string"
+    }
+  }
+}

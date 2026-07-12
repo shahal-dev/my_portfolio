@@ -1,0 +1,13 @@
+# Root-level safety net — each subproject (frontend/, cms/) also has its own
+# .gitignore; this catches anything in either regardless of location.
+**/node_modules
+**/.next/
+**/out/
+**/dist/
+**/build/
+**/.env
+**/.env.local
+**/.env.*.local
+.DS_Store
+.idea/
+.vscode/
