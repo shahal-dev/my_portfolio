@@ -1,8 +1,12 @@
-# Builds the Strapi CMS image in CI and pushes it to GHCR. The Oracle VM
-# only has ~500MB RAM — nowhere near enough to build Strapi's admin panel
-# bundle itself — so the VM only ever `docker compose pull`s this
-# already-built image, never builds it locally. See docker-compose.yml and
-# deploy.sh.
+# Builds the Strapi CMS image in CI and pushes it to GHCR. The VM only ever
+# `docker compose pull`s this already-built image, never builds it locally
+# (keeps the VM's setup to just "run containers", regardless of its specs).
+# See docker-compose.yml and deploy.sh.
+#
+# Built for linux/arm64 because the VM is an Oracle Ampere (ARM) instance —
+# GitHub's hosted runners are amd64, so this cross-builds via QEMU
+# (docker/setup-qemu-action). If the VM ever moves back to x86, add
+# linux/amd64 back to the `platforms` list below.
 
 name: Build and push CMS image
 
@@ -23,6 +27,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
       - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
@@ -34,6 +42,7 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: ./cms
+          platforms: linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/my_portfolio-cms:latest
           cache-from: type=gha
